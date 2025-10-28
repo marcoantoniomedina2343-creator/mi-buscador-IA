@@ -254,7 +254,46 @@
       50% { transform: translateY(-30px) scale(1.2); opacity: 0.8; }
       100% { transform: translateY(0) scale(1); opacity: 0.3; }
     }
+/* ==== VENTANAS EXPLICATIVAS DE NOMENCLATURAS ==== */
+.legend-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 25px;
+  flex-wrap: wrap;
+}
+
+.legend-box {
+  font-size: 14px;
+  padding: 10px 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  transition: transform 0.3s, box-shadow 0.3s;
+  color: var(--text-color);
+}
+
+.legend-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--highlight);
+}
+
+.legend-box.free {
+  border-left: 5px solid lime;
+}
+
+.legend-box.paid {
+  border-left: 5px solid #ff4d4d;
+}
+
+.legend-box.freemium {
+  border-left: 5px solid #00ffff;
+}
+
   </style>
+
 </head>
 
 <body>
@@ -275,6 +314,18 @@
     </nav>
     <button class="toggle-btn" onclick="toggleMode()">🌙/☀️</button>
   </header>
+<!-- EXPLICACIÓN DE NOMENCLATURAS -->
+<div class="legend-container">
+  <div class="legend-box free">
+    💸 <strong>Gratis:</strong> Herramientas 100% gratuitas sin costo.
+  </div>
+  <div class="legend-box paid">
+    💼 <strong>De pago:</strong> IA que requieren suscripción o compra.
+  </div>
+  <div class="legend-box freemium">
+    🌀 <strong>Freemium:</strong> Gratis con funciones premium opcionales.
+  </div>
+</div>
 
   <main id="inicio">
     <h2>Encuentra la IA que necesitas</h2>
@@ -336,61 +387,114 @@
       document.body.classList.toggle("light");
     }
 
-    // === BUSCADOR ===
-    const iaTools = [
-      { name: "ChatGPT", category: "texto", description: "Generación y asistencia con texto", keywords: ["texto", "escribir", "redacción", "preguntas", "chat"], url: "https://chat.openai.com" },
-      { name: "Claude", category: "texto", description: "Asistente conversacional avanzado", keywords: ["texto", "asistente", "preguntas", "respuestas"], url: "https://claude.ai" },
-      { name: "Gemini", category: "texto", description: "IA de Google para texto y búsquedas", keywords: ["google", "texto", "búsqueda", "chat"], url: "https://gemini.google.com" },
-      { name: "DALL·E", category: "imágenes", description: "Generación de imágenes con IA", keywords: ["imagen", "foto", "arte", "dibujo", "pintura"], url: "https://openai.com/dall-e" },
-      { name: "Stable Diffusion", category: "imágenes", description: "Genera imágenes a partir de texto", keywords: ["imagen", "generar", "arte", "realista"], url: "https://stability.ai" },
-      { name: "MidJourney", category: "imágenes", description: "IA artística para imágenes realistas", keywords: ["imagen", "arte", "realista", "foto", "dibujos"], url: "https://www.midjourney.com" },
-      { name: "AIVA", category: "música", description: "IA para componer música y audio", keywords: ["audio", "música", "canciones", "sonido"], url: "https://aiva.ai" },
-      { name: "Murf AI", category: "audio", description: "IA para crear voces realistas", keywords: ["voz", "audio", "hablar", "narración", "locución"], url: "https://murf.ai" },
-      { name: "Soundraw", category: "música", description: "Genera música personalizada con IA", keywords: ["música", "canciones", "audio", "componer"], url: "https://soundraw.io" },
-      { name: "Synthesia", category: "video", description: "IA para generar videos con avatares hablantes", keywords: ["video", "avatar", "presentación", "hablar"], url: "https://www.synthesia.io" },
-      { name: "Runway", category: "video", description: "IA para edición y generación de video", keywords: ["video", "editar", "generar", "cine", "efectos"], url: "https://runwayml.com" },
-      { name: "Copilot", category: "código", description: "Asistente de programación con IA", keywords: ["código", "programación", "github", "autocomplete"], url: "https://github.com/features/copilot" },
-      { name: "TabNine", category: "código", description: "Autocompletado de código con IA", keywords: ["código", "programación", "autocomplete", "IDE"], url: "https://www.tabnine.com" },
-      { name: "Replit Ghostwriter", category: "código", description: "IA para programar directamente en Replit", keywords: ["código", "programar", "replit", "asistente"], url: "https://replit.com" }
-    ];
+   // === BUSCADOR ===
+const iaTools = [
+  { name: "ChatGPT", category: "texto", description: "Generación y asistencia con texto", tipo: "Freemium", keywords: ["texto", "escribir", "redacción", "preguntas", "chat"], url: "https://chat.openai.com" },
+  { name: "Claude", category: "texto", description: "Asistente conversacional avanzado", tipo: "Gratis", keywords: ["texto", "asistente", "preguntas", "respuestas"], url: "https://claude.ai" },
+  { name: "Gemini", category: "texto", description: "IA de Google para texto y búsquedas", tipo: "Gratis", keywords: ["google", "texto", "búsqueda", "chat"], url: "https://gemini.google.com" },
+  { name: "DALL·E", category: "imágenes", description: "Generación de imágenes con IA", tipo: "Freemium", keywords: ["imagen", "foto", "arte", "dibujo", "pintura"], url: "https://openai.com/dall-e" },
+  { name: "Stable Diffusion", category: "imágenes", description: "Genera imágenes a partir de texto", tipo: "Gratis", keywords: ["imagen", "generar", "arte", "realista"], url: "https://stability.ai" },
+  { name: "MidJourney", category: "imágenes", description: "IA artística para imágenes realistas", tipo: "De pago", keywords: ["imagen", "arte", "realista", "foto", "dibujos"], url: "https://www.midjourney.com" },
+  { name: "AIVA", category: "música", description: "IA para componer música y audio", tipo: "Freemium", keywords: ["audio", "música", "canciones", "sonido"], url: "https://aiva.ai" },
+  { name: "Murf AI", category: "audio", description: "IA para crear voces realistas", tipo: "De pago", keywords: ["voz", "audio", "hablar", "narración", "locución"], url: "https://murf.ai" },
+  { name: "Soundraw", category: "música", description: "Genera música personalizada con IA", tipo: "Freemium", keywords: ["música", "canciones", "audio", "componer"], url: "https://soundraw.io" },
+  { name: "Synthesia", category: "video", description: "IA para generar videos con avatares hablantes", tipo: "De pago", keywords: ["video", "avatar", "presentación", "hablar"], url: "https://www.synthesia.io" },
+  { name: "Runway", category: "video", description: "IA para edición y generación de video", tipo: "Freemium", keywords: ["video", "editar", "generar", "cine", "efectos"], url: "https://runwayml.com" },
+  { name: "Copilot", category: "código", description: "Asistente de programación con IA", tipo: "De pago", keywords: ["código", "programación", "github", "autocomplete"], url: "https://github.com/features/copilot" },
+  { name: "TabNine", category: "código", description: "Autocompletado de código con IA", tipo: "Freemium", keywords: ["código", "programación", "autocomplete", "IDE"], url: "https://www.tabnine.com" },
+  { name: "Replit Ghostwriter", category: "código", description: "IA para programar directamente en Replit", tipo: "Freemium", keywords: ["código", "programar", "replit", "asistente"], url: "https://replit.com" }
+  ,
+  { name: "Perplexity AI", category: "texto", description: "Motor de búsqueda con respuestas generadas por IA.", tipo: "Gratis", keywords: ["texto", "búsqueda", "preguntas", "información"], url: "https://www.perplexity.ai" },
+  { name: "ChatSonic", category: "texto", description: "Alternativa a ChatGPT con generación de imágenes y voz.", tipo: "Freemium", keywords: ["texto", "voz", "imágenes", "asistente"], url: "https://writesonic.com/chat" },
+  { name: "YouChat", category: "texto", description: "Buscador y chat IA integrado en You.com.", tipo: "Gratis", keywords: ["texto", "búsqueda", "asistente"], url: "https://you.com/chat" },
+  { name: "Copy.ai", category: "texto", description: "Crea textos publicitarios y contenido automáticamente.", tipo: "Freemium", keywords: ["texto", "marketing", "publicidad", "escribir"], url: "https://www.copy.ai" },
+  { name: "Jasper", category: "texto", description: "Asistente para redacción profesional y marketing.", tipo: "De pago", keywords: ["texto", "redacción", "marketing", "copy"], url: "https://www.jasper.ai" },
+  { name: "Writesonic", category: "texto", description: "Generador de texto y artículos con IA.", tipo: "Freemium", keywords: ["texto", "artículos", "blog", "escribir"], url: "https://writesonic.com" },
+  { name: "DeepL Write", category: "texto", description: "Revisor gramatical y estilístico avanzado.", tipo: "Gratis", keywords: ["texto", "gramática", "escribir", "revisar"], url: "https://www.deepl.com/write" },
+  { name: "Grammarly", category: "texto", description: "Corrige y mejora redacciones en inglés.", tipo: "Freemium", keywords: ["texto", "inglés", "gramática"], url: "https://www.grammarly.com" },
+  { name: "Leonardo AI", category: "imágenes", description: "Generador de arte digital con control detallado.", tipo: "Freemium", keywords: ["imagen", "arte", "realista", "generador"], url: "https://leonardo.ai" },
+  { name: "BlueWillow", category: "imágenes", description: "Creador de imágenes similar a Midjourney.", tipo: "Gratis", keywords: ["imagen", "arte", "generar", "diseño"], url: "https://www.bluewillow.ai" },
+  { name: "Playground AI", category: "imágenes", description: "Generador de imágenes rápido y accesible.", tipo: "Freemium", keywords: ["imagen", "arte", "diseño"], url: "https://playground.com" },
+  { name: "Canva AI", category: "imágenes", description: "Herramientas de diseño con IA integrada.", tipo: "Freemium", keywords: ["imagen", "diseño", "presentaciones"], url: "https://www.canva.com" },
+  { name: "Remove.bg", category: "imágenes", description: "Elimina fondos de imágenes automáticamente.", tipo: "Gratis", keywords: ["imagen", "fondo", "editar"], url: "https://www.remove.bg" },
+  { name: "Pika Labs", category: "video", description: "Genera videos a partir de texto o imágenes.", tipo: "Freemium", keywords: ["video", "generar", "animación"], url: "https://pika.art" },
+  { name: "HeyGen", category: "video", description: "Crea videos con avatares IA realistas.", tipo: "Freemium", keywords: ["video", "avatar", "presentación"], url: "https://www.heygen.com" },
+  { name: "Descript", category: "video", description: "Edición de video y audio con IA integrada.", tipo: "Freemium", keywords: ["video", "audio", "editar"], url: "https://www.descript.com" },
+  { name: "Kaiber", category: "video", description: "Convierte texto o imágenes en animaciones con IA.", tipo: "Freemium", keywords: ["video", "animación", "imágenes"], url: "https://www.kaiber.ai" },
+  { name: "ElevenLabs", category: "audio", description: "Crea voces hiperrealistas a partir de texto.", tipo: "Freemium", keywords: ["audio", "voz", "locución"], url: "https://elevenlabs.io" },
+  { name: "Voicemod", category: "audio", description: "Modifica tu voz en tiempo real con IA.", tipo: "Freemium", keywords: ["audio", "voz", "efectos"], url: "https://www.voicemod.net" },
+  { name: "LALAL.AI", category: "audio", description: "Separa instrumentos y voces en canciones.", tipo: "Freemium", keywords: ["audio", "música", "separar"], url: "https://www.lalal.ai" },
+  { name: "Boomy", category: "música", description: "Genera canciones completas en segundos.", tipo: "Gratis", keywords: ["música", "canciones", "crear"], url: "https://www.boomy.com" },
+  { name: "Beatoven", category: "música", description: "Compone música según tus emociones.", tipo: "Freemium", keywords: ["música", "audio", "componer"], url: "https://www.beatoven.ai" },
+  { name: "Codeium", category: "código", description: "Autocompletado gratuito para programadores.", tipo: "Gratis", keywords: ["código", "programación", "autocomplete"], url: "https://www.codeium.com" },
+  { name: "BlackBox AI", category: "código", description: "Buscador de código y soluciones IA.", tipo: "Freemium", keywords: ["código", "buscar", "programar"], url: "https://www.useblackbox.io" },
+  { name: "AskCodi", category: "código", description: "Asistente IA para desarrolladores.", tipo: "Freemium", keywords: ["código", "programar", "ayuda"], url: "https://askcodi.com" },
+  { name: "CodeWhisperer", category: "código", description: "Asistente IA de Amazon para programadores.", tipo: "Gratis", keywords: ["código", "amazon", "programación"], url: "https://aws.amazon.com/codewhisperer" },
+  { name: "Krea.ai", category: "imágenes", description: "Crea y mejora diseños visuales con IA.", tipo: "Freemium", keywords: ["imagen", "diseño", "creatividad"], url: "https://www.krea.ai" },
+  { name: "Magic Eraser", category: "imágenes", description: "Elimina objetos no deseados de fotos.", tipo: "Gratis", keywords: ["imagen", "editar", "borrar"], url: "https://magicstudio.com/eraser" },
+  { name: "TutorAI", category: "educación", description: "Explica conceptos complejos paso a paso.", tipo: "Gratis", keywords: ["educación", "aprender", "explicaciones"], url: "https://www.tutorai.me" },
+  { name: "Consensus", category: "educación", description: "Busca investigaciones científicas con IA.", tipo: "Gratis", keywords: ["educación", "ciencia", "búsqueda"], url: "https://consensus.app" },
+  { name: "SlidesAI", category: "productividad", description: "Crea presentaciones automáticas con IA.", tipo: "Freemium", keywords: ["presentaciones", "diapositivas", "texto"], url: "https://www.slidesai.io" },
+  { name: "Notion AI", category: "productividad", description: "IA integrada en Notion para escribir mejor.", tipo: "Freemium", keywords: ["texto", "organización", "notas"], url: "https://www.notion.so/product/ai" },
+  { name: "Taskade AI", category: "productividad", description: "Planificación y generación de ideas con IA.", tipo: "Gratis", keywords: ["organización", "proyectos", "productividad"], url: "https://www.taskade.com" },
+  { name: "Tome AI", category: "presentaciones", description: "Crea presentaciones narradas con IA.", tipo: "Freemium", keywords: ["presentaciones", "diseño", "historias"], url: "https://tome.app" },
+  { name: "PhotoRoom", category: "imágenes", description: "Editor de fotos con IA y fondo automático.", tipo: "Freemium", keywords: ["imagen", "editar", "fondo"], url: "https://www.photoroom.com" },
+  { name: "Suno AI", category: "música", description: "Crea canciones con letra y voz mediante IA.", tipo: "Gratis", keywords: ["música", "voz", "letras"], url: "https://suno.ai" },
+  { name: "Hugging Face", category: "código", description: "Plataforma de modelos IA para desarrolladores.", tipo: "Gratis", keywords: ["código", "modelos", "api"], url: "https://huggingface.co" },
+  { name: "ChatbotKit", category: "código", description: "Crea tus propios chatbots IA fácilmente.", tipo: "Freemium", keywords: ["chatbot", "crear", "texto"], url: "https://chatbotkit.com" }
 
-    const searchInput = document.getElementById("search");
-    const resultsDiv = document.getElementById("results");
+];
 
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.toLowerCase().trim();
-      resultsDiv.innerHTML = "";
 
-      if (query === "") return;
+const searchInput = document.getElementById("search");
+const resultsDiv = document.getElementById("results");
 
-      const palabrasUsuario = query.split(" ").filter(p => p.length > 2);
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.toLowerCase().trim();
+  resultsDiv.innerHTML = "";
 
-      const filtered = iaTools.filter(tool => {
-        const textoTotal = `${tool.name} ${tool.category} ${tool.description} ${tool.keywords.join(" ")}`.toLowerCase();
-        return palabrasUsuario.some(p => textoTotal.includes(p));
-      });
+  if (query === "") return;
 
-      if (filtered.length === 0) {
-        resultsDiv.innerHTML = "<p>No se encontraron resultados 😕</p>";
-        return;
-      }
+  const palabrasUsuario = query.split(" ").filter(p => p.length > 2);
 
-      filtered.forEach(tool => {
-        const item = document.createElement("div");
-        item.classList.add("result-item");
+  const filtered = iaTools.filter(tool => {
+    const textoTotal = `${tool.name} ${tool.category} ${tool.description} ${tool.keywords.join(" ")}`.toLowerCase();
+    return palabrasUsuario.some(p => textoTotal.includes(p));
+  });
 
-        let nombreResaltado = tool.name;
-        let descripcionResaltada = tool.description;
-        palabrasUsuario.forEach(p => {
-          const regex = new RegExp(`(${p})`, "gi");
-          nombreResaltado = nombreResaltado.replace(regex, "<mark>$1</mark>");
-          descripcionResaltada = descripcionResaltada.replace(regex, "<mark>$1</mark>");
-        });
+  if (filtered.length === 0) {
+    resultsDiv.innerHTML = "<p>No se encontraron resultados 😕</p>";
+    return;
+  }
 
-        item.innerHTML = `<a href="${tool.url}" target="_blank">${nombreResaltado}</a> - ${descripcionResaltada}`;
-        resultsDiv.appendChild(item);
-      });
+  filtered.forEach(tool => {
+    const item = document.createElement("div");
+    item.classList.add("result-item");
+
+    let nombreResaltado = tool.name;
+    let descripcionResaltada = tool.description;
+    palabrasUsuario.forEach(p => {
+      const regex = new RegExp(`(${p})`, "gi");
+      nombreResaltado = nombreResaltado.replace(regex, "<mark>$1</mark>");
+      descripcionResaltada = descripcionResaltada.replace(regex, "<mark>$1</mark>");
     });
+
+    // 💡 Estilos visuales para el tipo de IA
+    let tipoBadge = "";
+    if (tool.tipo === "Gratis") tipoBadge = `<span style="color:lime; font-weight:bold;">💸 ${tool.tipo}</span>`;
+    else if (tool.tipo === "De pago") tipoBadge = `<span style="color:#ff4d4d; font-weight:bold;">💼 ${tool.tipo}</span>`;
+    else tipoBadge = `<span style="color:#00ffff; font-weight:bold;">🌀 ${tool.tipo}</span>`;
+
+    item.innerHTML = `
+      <a href="${tool.url}" target="_blank">${nombreResaltado}</a><br>
+      <small>${descripcionResaltada}</small><br>
+      ${tipoBadge}
+    `;
+    resultsDiv.appendChild(item);
+  });
+});
+
+   
   </script>
 </body>
 </html>
